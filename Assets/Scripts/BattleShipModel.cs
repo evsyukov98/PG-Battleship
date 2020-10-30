@@ -5,7 +5,6 @@ public class BattleShipModel : IPlayerReceiver
 {
     private IPlayer _player1;
     private IPlayer _player2;
-    
     private IPlayer _activePlayer;
     
     private bool _isGameRunning;
@@ -40,9 +39,6 @@ public class BattleShipModel : IPlayerReceiver
         _activePlayer = _player1;
         IsGameStarted = true;
 
-        GenerateShip(Grid2,3,true,0,0);
-        //
-        
         _activePlayer.MakeTurn(this);
     }
 
@@ -65,22 +61,90 @@ public class BattleShipModel : IPlayerReceiver
     }
 
     // Строит вниз или в право, относительно начальной точки
-    private void GenerateShip(CellState[,] grid, int size, 
+    private void CreateShip(CellState[,] grid, int size, 
         bool isVertical, int coordinateX, int coordinateY)
     {
-        for (int i = 0; i < size; i++)
-        {
+        
             if (isVertical)
             {
-                grid[coordinateX + i, coordinateY] = CellState.Ship;
+                if (coordinateX + size - 1 > 9)
+                {
+                    Debug.Log($"coordinate X {coordinateX +size -1} not exist");
+                    return;
+                }
+                
+                MarksNearShip();
+                for (int i = 0; i < size; i++)
+                {
+                    grid[coordinateX + i, coordinateY] = CellState.Ship;
+                }
             }
             else
             {
-                grid[coordinateX, coordinateY + i] = CellState.Ship;
+                if (coordinateY + size - 1 > 9)
+                {
+                    Debug.Log($"coordinate Y {coordinateY +size -1} not exist");
+                    return;
+                }
+
+                MarksNearShip();
+                for (int i = 0; i < size; i++)
+                {
+                    grid[coordinateX, coordinateY + i] = CellState.Ship;
+                }
             }
-        }
+
+            void MarksNearShip()
+            {
+                int offsetX = 1;
+                int offsetY = 1;
+                
+                int massSizeY = 0;
+                int massSizeX = 0;
+
+                if (coordinateX == 0)
+                {
+                    offsetX = 0;
+                    massSizeX = -1;
+                }
+                if (coordinateY == 0)
+                {
+                    offsetY = 0;
+                    massSizeY = -1;
+                }
+
+                if (coordinateY == 9)
+                {
+                    massSizeY = -1;
+                }
+                if (coordinateX == 9)
+                {
+                    massSizeX = -1;
+                }
+
+                if (isVertical)
+                { 
+                    for (int i = 0; i < size + 1 + massSizeX; i++)
+                    {
+                        for (int j = 0; j < 3 + massSizeY; j++)
+                        {
+                            grid[coordinateX - offsetX + i, coordinateY - offsetY + j] =
+                                CellState.NearShip;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 3 + massSizeX; i++)
+                    {
+                        for (int j = 0; j < size + 1 + massSizeY; j++)
+                        {
+                            
+                            grid[coordinateX - offsetX + i, coordinateY - offsetY + j] =
+                                CellState.NearShip;
+                        }
+                    }
+                }
+            }
     }
-    
-    
-    
 }
