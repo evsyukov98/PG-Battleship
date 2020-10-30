@@ -7,6 +7,7 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
+          <e p="AIPlayer.cs" t="Include" />
           <e p="BattleShipModel.cs" t="Include" />
           <e p="BattleShipPresenter.cs" t="Include" />
           <e p="CellController.cs" t="Include" />

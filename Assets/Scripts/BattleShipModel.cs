@@ -7,11 +7,13 @@ public class BattleShipModel : IPlayerReceiver
     private IPlayer _player2;
     
     private IPlayer _activePlayer;
-
+    
     private bool _isGameRunning;
 
     public CellState[,] Grid1 { get; } = new CellState[10, 10];
     public CellState[,] Grid2 { get; } = new CellState[10, 10];
+
+    public bool IsPlayer1 => _activePlayer == _player1;
 
     public bool IsGameStarted
     {
@@ -25,7 +27,7 @@ public class BattleShipModel : IPlayerReceiver
     }
     
     public event Action GameStatusChanged;
-    public event Action<bool, CellState, int, int> PlayerMadeTurn;
+    public event Action<CellState, int, int> PlayerMadeTurn;
     public event Action<CellState> WinnerFound;
     
     public void StartBattle(IPlayer player1, IPlayer player2)
@@ -38,39 +40,47 @@ public class BattleShipModel : IPlayerReceiver
         _activePlayer = _player1;
         IsGameStarted = true;
 
+        GenerateShip(Grid2,3,true,0,0);
+        //
+        
         _activePlayer.MakeTurn(this);
     }
 
     public void MakeTurn(int coordinateX, int coordinateY)
     {
-        Debug.Log(coordinateX+""+coordinateY);
-        SetState(coordinateX, coordinateY);
-        
+        SetState(coordinateX, coordinateY, IsPlayer1 ? Grid2 : Grid1);
+
         _activePlayer = _activePlayer == _player1 ? _player2 : _player1;
         
         if (_isGameRunning) _activePlayer.MakeTurn(this);
     }
     
-    
-    private void SetState(int coordinateX, int coordinateY)
+    private void SetState(int coordinateX, int coordinateY, CellState[,] grid)
     {
-        bool isPlayer1;
-        
-        if (_activePlayer == _player1)
-        {
-            isPlayer1 = true;
-            Grid1[coordinateX,coordinateY] = CellState.Hit;
-            // TODO: CellState.hit надо поменять на попытаться уничтожить корабль
-            // TODO: (короче логика должна быть)
-        }
-        else
-        {
-            isPlayer1 = false;
-            Grid2[coordinateX, coordinateY] = CellState.Hit;
-        }
-        
-        PlayerMadeTurn?.Invoke(isPlayer1, CellState.Hit, coordinateX, coordinateY);
+        var state = grid[coordinateX, coordinateY] == CellState.Ship ? CellState.Hit : CellState.Miss;
 
+        grid[coordinateX, coordinateY] = state;
+
+        PlayerMadeTurn?.Invoke(state, coordinateX, coordinateY);
     }
+
+    // Строит вниз или в право, относительно начальной точки
+    private void GenerateShip(CellState[,] grid, int size, 
+        bool isVertical, int coordinateX, int coordinateY)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (isVertical)
+            {
+                grid[coordinateX + i, coordinateY] = CellState.Ship;
+            }
+            else
+            {
+                grid[coordinateX, coordinateY + i] = CellState.Ship;
+            }
+        }
+    }
+    
+    
     
 }

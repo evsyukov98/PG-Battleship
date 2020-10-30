@@ -1,7 +1,8 @@
 ﻿
 public enum CellState 
 {
-    Inactive = 0,
+    None = 0,
     Hit = 1,
-    Miss =2
+    Miss = 2,
+    Ship = 3
 }

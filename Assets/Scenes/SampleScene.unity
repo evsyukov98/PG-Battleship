@@ -12840,7 +12840,7 @@ GameObject:
   - component: {fileID: 1279199182}
   - component: {fileID: 1279199181}
   m_Layer: 5
-  m_Name: HotSeatButton
+  m_Name: WithAIButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17310,7 +17310,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HotSeat
+  m_Text: With AI
 --- !u!222 &1764481157
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21207,8 +21207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd46b8c0e2978e94889fff860262e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hotSeatButton: {fileID: 1279199181}
-  withAIButton: {fileID: 0}
+  withAIButton: {fileID: 1279199181}
   grid1: {fileID: 1293724903}
   grid2: {fileID: 55327308}
 --- !u!1001 &2123935772

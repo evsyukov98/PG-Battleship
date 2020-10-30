@@ -5,11 +5,10 @@ using UnityEngine.UI;
 
 public class BattleShipPresenter : MonoBehaviour, IInputController
 {
-    [SerializeField] private Button hotSeatButton = default;
     [SerializeField] private Button withAIButton = default;
 
-    [SerializeField] private GameObject grid1;
-    [SerializeField] private GameObject grid2;
+    [SerializeField] private GameObject grid1 = default;
+    [SerializeField] private GameObject grid2 = default;
     
     private Dictionary<Vector2, CellController> _cellControllers1;
     private Dictionary<Vector2, CellController> _cellControllers2;
@@ -28,29 +27,29 @@ public class BattleShipPresenter : MonoBehaviour, IInputController
     {
         _model.PlayerMadeTurn += OnPlayerMadeTurn;
 
-        hotSeatButton.onClick.AddListener(StartHotSeatGame);
+        withAIButton.onClick.AddListener(StartGameWithAi);
         
         SetupCells();
     }
 
-    private void StartHotSeatGame()
+    private void StartGameWithAi()
     {
         IPlayer player1 = new LocalPlayer(this);
-        IPlayer player2 = new LocalPlayer(this);
+        IPlayer player2 = new AIPlayer();
 
         _model.StartBattle(player1,player2);
         
     }
     
-    private void OnPlayerMadeTurn(bool isPLayer1, CellState state, int coordinateX, int coordinateY)
+    private void OnPlayerMadeTurn(CellState state, int coordinateX, int coordinateY)
     {
-        if (isPLayer1)
+        if (_model.IsPlayer1)
         {
-            _cellControllers1[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
+            _cellControllers2[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
         }
         else
         {
-            _cellControllers2[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
+            _cellControllers1[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
         }
     }
 
@@ -62,7 +61,7 @@ public class BattleShipPresenter : MonoBehaviour, IInputController
         foreach (var cell in cellControllersMass1)
         {
             _cellControllers1.Add(cell.coordinate, cell);
-            cell.CellSelected += OnCellSelected;
+            //cell.CellSelected += OnCellSelected;
         }
         foreach (var cell in cellControllersMass2)
         {
