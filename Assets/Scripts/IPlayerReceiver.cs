@@ -8,4 +8,6 @@ public interface IPlayerReceiver
 
     bool CreateShip(CellState[,] grid, int size,
         bool isVertical, int coordinateX, int coordinateY);
+
+    void WinnerFound(IPlayer player);
 }

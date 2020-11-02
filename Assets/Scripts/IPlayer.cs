@@ -1,9 +1,12 @@
 ﻿public interface IPlayer
 {
+    IPlayerReceiver Model { get; set; }
+    string Name { get; }
 
+    int HealthPoint { get; set; }
     CellState State { get; set; }
 
-    void MakeTurn(IPlayerReceiver model);
+    void MakeTurn();
 
-    void SetShips(IPlayerReceiver model);
+    void SetShips();
 }

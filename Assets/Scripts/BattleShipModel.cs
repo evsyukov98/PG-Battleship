@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 public class BattleShipModel : IPlayerReceiver
 {
@@ -27,7 +26,7 @@ public class BattleShipModel : IPlayerReceiver
     
     public event Action GameStatusChanged;
     public event Action<CellState, int, int> PlayerMadeTurn;
-    public event Action<CellState> WinnerFound;
+    public event Action<string> WinnerFound;
     
     public void StartBattle(IPlayer player1, IPlayer player2)
     {
@@ -38,20 +37,23 @@ public class BattleShipModel : IPlayerReceiver
         
         _activePlayer = _player1;
         IsGameStarted = true;
-        
-        _player1.SetShips(this);
-        _player2.SetShips(this);
 
-        _activePlayer.MakeTurn(this);
+        _player1.Model = this;
+        _player2.Model = this;
+
+        _player1.SetShips();
+        _player2.SetShips();
+
+        _activePlayer.MakeTurn();
     }
 
     void IPlayerReceiver.MakeTurn(int coordinateX, int coordinateY)
     {
-        SetState(coordinateX, coordinateY, IsPlayer1 ? Grid2 : Grid1);
+        SetState(coordinateX, coordinateY, _activePlayer);
 
         _activePlayer = _activePlayer == _player1 ? _player2 : _player1;
         
-        if (_isGameRunning) _activePlayer.MakeTurn(this);
+        if (_isGameRunning) _activePlayer.MakeTurn();
     }
 
     bool IPlayerReceiver.CreateShip(CellState[,] grid, int size, 
@@ -102,6 +104,11 @@ public class BattleShipModel : IPlayerReceiver
             }
         }
         return true;
+    }
+
+    void IPlayerReceiver.WinnerFound(IPlayer player)
+    {
+        WinnerFound?.Invoke(player.Name);
     }
     
     private void MarksNearShip(CellState[,] grid, int size, 
@@ -170,11 +177,15 @@ public class BattleShipModel : IPlayerReceiver
         }
     }
     
-    private void SetState(int coordinateX, int coordinateY, CellState[,] grid)
+    private void SetState(int coordinateX, int coordinateY, IPlayer player)
     {
-        var state = grid[coordinateX, coordinateY] == CellState.Ship ? CellState.Hit : CellState.Miss;
+        CellState[,] grid = player == _player1 ? Grid2 : Grid1;
+        
+        CellState state = grid[coordinateX, coordinateY] == CellState.Ship ? CellState.Hit : CellState.Miss;
 
         grid[coordinateX, coordinateY] = state;
+
+        if (state == CellState.Hit) player.HealthPoint--;
 
         PlayerMadeTurn?.Invoke(state, coordinateX, coordinateY);
     }

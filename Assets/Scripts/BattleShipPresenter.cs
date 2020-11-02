@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleShipPresenter : MonoBehaviour, IInputController
 {
+    [SerializeField] private Text winner;
     
     [SerializeField] private Button withAIButton = default;
 
@@ -27,19 +28,25 @@ public class BattleShipPresenter : MonoBehaviour, IInputController
     private void Start()
     {
         _model.PlayerMadeTurn += OnPlayerMadeTurn;
+        _model.WinnerFound += OnWinnerFound;
 
         withAIButton.onClick.AddListener(StartGameWithAi);
         
         SetupCells();
     }
 
+    private void OnWinnerFound(string player)
+    {
+        winner.text = $"Winner {player}";
+    }
+
     private void StartGameWithAi()
     {
-        IPlayer player1 = new LocalPlayer(this);
-        IPlayer player2 = new AIPlayer();
-
-        _model.StartBattle(player1,player2);
+        if (_model.IsGameStarted) return;
         
+        IPlayer player1 = new LocalPlayer(this, "local Player");
+        IPlayer player2 = new AIPlayer("Ai Player");
+        _model.StartBattle(player1,player2);
     }
     
     private void OnPlayerMadeTurn(CellState state, int coordinateX, int coordinateY)
