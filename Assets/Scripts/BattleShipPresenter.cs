@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleShipPresenter : MonoBehaviour, IInputController
 {
+    
     [SerializeField] private Button withAIButton = default;
 
     [SerializeField] private GameObject grid1 = default;
@@ -61,7 +62,6 @@ public class BattleShipPresenter : MonoBehaviour, IInputController
         foreach (var cell in cellControllersMass1)
         {
             _cellControllers1.Add(cell.coordinate, cell);
-            //cell.CellSelected += OnCellSelected;
         }
         foreach (var cell in cellControllersMass2)
         {
@@ -74,5 +74,4 @@ public class BattleShipPresenter : MonoBehaviour, IInputController
     {
         CellSelected?.Invoke((int)coordinate.x ,(int)coordinate.y);
     }
-
 }

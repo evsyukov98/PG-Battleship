@@ -17,7 +17,11 @@ public class LocalPlayer : IPlayer
         _model = model;
         _inputController.CellSelected += SelectCell;
     }
-    
+
+    public void SetShips(IPlayerReceiver model)
+    {
+    }
+
     private void SelectCell(int coordinateX, int coordinateY)
     {
         _model.MakeTurn(coordinateX, coordinateY);

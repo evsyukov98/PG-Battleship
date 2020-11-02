@@ -6,4 +6,6 @@ public interface IPlayerReceiver
     
     void MakeTurn(int coordinateX, int coordinateY);
 
+    bool CreateShip(CellState[,] grid, int size,
+        bool isVertical, int coordinateX, int coordinateY);
 }
