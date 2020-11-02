@@ -1,13 +1,17 @@
-﻿
-public interface IPlayerReceiver
+﻿namespace BattleShip
 {
-    CellState[,] Grid1 { get; }
-    CellState[,] Grid2 { get; }
     
-    void MakeTurn(int coordinateX, int coordinateY);
+    public interface IPlayerReceiver
+    {
 
-    bool CreateShip(CellState[,] grid, int size,
-        bool isVertical, int coordinateX, int coordinateY);
+        CellState[,] Grid1 { get; }
+        CellState[,] Grid2 { get; }
 
-    void WinnerFound(IPlayer player);
+        void MakeTurn(int coordinateX, int coordinateY);
+
+        bool CreateShip(CellState[,] grid, int size,
+            bool isVertical, int coordinateX, int coordinateY);
+
+        void WinnerFound(IPlayer player);
+    }
 }

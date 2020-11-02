@@ -1,84 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class BattleShipPresenter : MonoBehaviour, IInputController
+namespace BattleShip
 {
-    [SerializeField] private Text winner;
     
-    [SerializeField] private Button withAIButton = default;
-
-    [SerializeField] private GameObject grid1 = default;
-    [SerializeField] private GameObject grid2 = default;
-    
-    private Dictionary<Vector2, CellController> _cellControllers1;
-    private Dictionary<Vector2, CellController> _cellControllers2;
-    
-    private readonly BattleShipModel _model = new BattleShipModel();
-    
-    public Action<int, int> CellSelected { get; set; }
-    
-    private void Awake()
+    public class BattleShipPresenter : MonoBehaviour, IInputController
     {
-        _cellControllers1 = new Dictionary<Vector2, CellController>();
-        _cellControllers2 = new Dictionary<Vector2, CellController>();
-    }
 
-    private void Start()
-    {
-        _model.PlayerMadeTurn += OnPlayerMadeTurn;
-        _model.WinnerFound += OnWinnerFound;
+        [SerializeField] private Text winner = default;
 
-        withAIButton.onClick.AddListener(StartGameWithAi);
-        
-        SetupCells();
-    }
+        [SerializeField] private Button withAIButton = default;
 
-    private void OnWinnerFound(string player)
-    {
-        winner.text = $"Winner {player}";
-    }
+        [SerializeField] private GameObject grid1 = default;
+        [SerializeField] private GameObject grid2 = default;
 
-    private void StartGameWithAi()
-    {
-        if (_model.IsGameStarted) return;
-        
-        IPlayer player1 = new LocalPlayer(this, "local Player");
-        IPlayer player2 = new AIPlayer("Ai Player");
-        _model.StartBattle(player1,player2);
-    }
-    
-    private void OnPlayerMadeTurn(CellState state, int coordinateX, int coordinateY)
-    {
-        if (_model.IsPlayer1)
+        private Dictionary<Vector2, CellController> _cellControllers1;
+        private Dictionary<Vector2, CellController> _cellControllers2;
+
+        private readonly BattleShipModel _model = new BattleShipModel();
+
+        public Action<int, int> CellSelected { get; set; }
+
+        private void Awake()
         {
-            _cellControllers2[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
+            _cellControllers1 = new Dictionary<Vector2, CellController>();
+            _cellControllers2 = new Dictionary<Vector2, CellController>();
         }
-        else
-        {
-            _cellControllers1[new Vector2(coordinateX,coordinateY)].CellStateChange(state);
-        }
-    }
 
-    private void SetupCells()
-    {
-        var cellControllersMass1 = grid1.GetComponentsInChildren<CellController>();
-        var cellControllersMass2 = grid2.GetComponentsInChildren<CellController>();
+        private void Start()
+        {
+            _model.PlayerMadeTurn += OnPlayerMadeTurn;
+            _model.WinnerFound += OnWinnerFound;
+            _model.GameStatusChanged += OnGameStatusChanged;
 
-        foreach (var cell in cellControllersMass1)
-        {
-            _cellControllers1.Add(cell.coordinate, cell);
+            withAIButton.onClick.AddListener(StartGameWithAi);
+
+            SetupCells();
+            OnGameStatusChanged();
         }
-        foreach (var cell in cellControllersMass2)
+
+        private void OnGameStatusChanged()
         {
-            _cellControllers2.Add(cell.coordinate, cell);
-            cell.CellSelected += OnCellSelected;
+            foreach (var cell in _cellControllers1)
+            {
+                cell.Value.SetActive(_model.IsGameStarted);
+            }
+            foreach (var cell in _cellControllers2)
+            {
+                cell.Value.SetActive(_model.IsGameStarted);
+            }
         }
-    }
-    
-    private void OnCellSelected(Vector2 coordinate)
-    {
-        CellSelected?.Invoke((int)coordinate.x ,(int)coordinate.y);
+
+        private void OnWinnerFound(string player)
+        {
+            winner.text = $"Winner {player}";
+        }
+
+        private void StartGameWithAi()
+        {
+            if (_model.IsGameStarted) return;
+
+            IPlayer player1 = new LocalPlayer(this, "local Player");
+            IPlayer player2 = new AIPlayer("Ai Player");
+            _model.StartBattle(player1, player2);
+            
+            withAIButton.enabled = false;
+        }
+
+        private void OnPlayerMadeTurn(CellState state, int coordinateX, int coordinateY)
+        {
+            if (_model.IsPlayer1)
+            {
+                _cellControllers2[new Vector2(coordinateX, coordinateY)].CellStateChange(state);
+            }
+            else
+            {
+                _cellControllers1[new Vector2(coordinateX, coordinateY)].CellStateChange(state);
+            }
+        }
+
+        private void SetupCells()
+        {
+            var cellControllersMass1 = grid1.GetComponentsInChildren<CellController>();
+            var cellControllersMass2 = grid2.GetComponentsInChildren<CellController>();
+
+            foreach (var cell in cellControllersMass1)
+            {
+                _cellControllers1.Add(cell.coordinate, cell);
+            }
+
+            foreach (var cell in cellControllersMass2)
+            {
+                _cellControllers2.Add(cell.coordinate, cell);
+                cell.CellSelected += OnCellSelected;
+            }
+        }
+
+        private void OnCellSelected(Vector2 coordinate)
+        {
+            CellSelected?.Invoke((int) coordinate.x, (int) coordinate.y);
+        }
     }
 }

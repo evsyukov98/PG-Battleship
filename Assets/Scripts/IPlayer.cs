@@ -1,12 +1,17 @@
-﻿public interface IPlayer
+﻿namespace BattleShip
 {
-    IPlayerReceiver Model { get; set; }
-    string Name { get; }
+    
+    public interface IPlayer
+    {
 
-    int HealthPoint { get; set; }
-    CellState State { get; set; }
+        IPlayerReceiver Model { get; set; }
+        string Name { get; }
 
-    void MakeTurn();
+        int HealthPoint { get; set; }
+        CellState State { get; set; }
 
-    void SetShips();
+        void MakeTurn();
+
+        void SetShips();
+    }
 }
