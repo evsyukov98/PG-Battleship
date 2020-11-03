@@ -53,9 +53,10 @@ namespace BattleShip
 
         void IPlayerReceiver.MakeTurn(int coordinateX, int coordinateY)
         {
-            SetState(coordinateX, coordinateY, _activePlayer);
-
-            _activePlayer = _activePlayer == _player1 ? _player2 : _player1;
+            if (!SetState(coordinateX, coordinateY, _activePlayer))
+            {
+                _activePlayer = _activePlayer == _player1 ? _player2 : _player1;
+            }
 
             if (_isGameRunning) _activePlayer.MakeTurn();
         }
@@ -110,7 +111,7 @@ namespace BattleShip
             IsGameStarted = false;
         }
 
-        private void SetState(int coordinateX, int coordinateY, IPlayer player)
+        private bool SetState(int coordinateX, int coordinateY, IPlayer player)
         {
             CellState[,] grid = player == _player1 ? Grid2 : Grid1;
 
@@ -118,9 +119,15 @@ namespace BattleShip
 
             grid[coordinateX, coordinateY] = state;
 
-            if (state == CellState.Hit) player.HealthPoint--;
+            if (state == CellState.Hit)
+            {
+                player.HealthPoint--;
+                PlayerMadeTurn?.Invoke(state, coordinateX, coordinateY);
+                return true;
+            }
 
             PlayerMadeTurn?.Invoke(state, coordinateX, coordinateY);
+            return false;
         }
 
         private void MarksNearShip(CellState[,] grid, int size,

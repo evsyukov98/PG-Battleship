@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BattleShip
@@ -56,15 +55,16 @@ namespace BattleShip
 
         private void OnWinnerFound(string player)
         {
-            winner.text = $"Winner {player}";
+            winner.text = $"Winner: {player}!!!";
+            StartCoroutine(SceneController.RestartGame(2));
         }
 
         private void StartGameWithAi()
         {
             if (_model.IsGameStarted) return;
 
-            IPlayer player1 = new LocalPlayer(this, "local Player");
-            IPlayer player2 = new AIPlayer("Ai Player");
+            IPlayer player1 = new LocalPlayer(this, "Local Player");
+            IPlayer player2 = new AIPlayer("AI Player");
             _model.StartBattle(player1, player2);
             
             withAIButton.enabled = false;

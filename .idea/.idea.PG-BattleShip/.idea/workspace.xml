@@ -20,14 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a98ec53b-e2ac-4927-a76d-64f240f4d8af" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PG-BattleShip/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AIPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AIPlayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BattleShipModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BattleShipModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BattleShipPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BattleShipPresenter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CellState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CellState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IPlayerReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IPlayerReceiver.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/LocalPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LocalPlayer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,11 +54,12 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/CellController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CellState.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/IPlayerReceiver.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/LocalPlayer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/IPlayer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AIPlayer.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/BattleShipModel.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/BattleShipPresenter.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/BattleShipModel.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/LocalPlayer.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/SceneController.cs" />
       </list>
     </option>
   </component>
@@ -113,6 +111,7 @@
       <workItem from="1604229581896" duration="6440000" />
       <workItem from="1604301514314" duration="16014000" />
       <workItem from="1604328825765" duration="752000" />
+      <workItem from="1604388317028" duration="1006000" />
     </task>
     <servers />
   </component>

@@ -23,7 +23,6 @@ namespace BattleShip
                 if (_healthPoint <= 0)
                 {
                     Model.WinnerFound(this);
-
                 }
             }
         }
@@ -70,7 +69,6 @@ namespace BattleShip
                     shipPlaced = Model.CreateShip(Model.Grid1, size, isVertical, x, y);
                 }
             }
-
             return size * count;
         }
 

@@ -17,6 +17,7 @@
           <e p="IPlayer.cs" t="Include" />
           <e p="IPlayerReceiver.cs" t="Include" />
           <e p="LocalPlayer.cs" t="Include" />
+          <e p="SceneController.cs" t="Include" />
         </e>
       </e>
       <e p="obj" t="ExcludeRecursive" />
